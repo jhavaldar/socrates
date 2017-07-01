@@ -1,0 +1,133 @@
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
+<script type='text/javascript'>
+  function medTimeHide() {
+      if(document.getElementById('id_meditation').checked) {
+        document.getElementById('med_time').style.display = '';
+      }
+      else {
+           document.getElementById('med_time').style.display = 'none';
+      }
+  }
+
+  function exerciseTypeHide() {
+      if(document.getElementById('id_did_exercise').checked) {
+        document.getElementById('exercise_type').style.display = '';
+        document.getElementById('exercise_description').style.display = '';
+      }
+      else {
+        document.getElementById('exercise_type').style.display = 'none';
+        document.getElementById('exercise_description').style.display = 'none';
+      }
+  }
+
+  function exerciseMilesHide() {
+      if(document.getElementById('id_exercise_type').selectedIndex==0) {
+        document.getElementById('exercise_miles').style.display = '';
+      }
+      else {
+        document.getElementById('exercise_miles').style.display = 'none';
+      }
+  }
+
+window.onload = function() {
+    document.getElementById('id_did_exercise').onchange = exerciseTypeHide;
+    document.getElementById('id_exercise_type').onchange = exerciseMilesHide;
+    document.getElementById('id_meditation').onclick = medTimeHide;
+};
+</script>
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>New Entry</h1>
+  <b> Hi! Let's check in on your progress today. These metrics are broken into three basic categories: physical, mental, and spiritual health. </b>
+    <form action="" method="post">
+    {% csrf_token %}
+    <h3> <b>Physical</b> <h3>
+    <!-- Calories -->
+    <div class="fieldWrapper" id="calories">
+        {{ form.calories.errors }}
+        <b>How many calories did you eat today?</b>
+        {{ form.calories }}
+    </div>
+    <!-- Exercise -->
+    <div class="fieldWrapper" id="exercise">
+        {{ form.did_exercise.errors }}
+        <b>Did you exercise today?</b>
+        {{ form.did_exercise }}
+    </div>
+    <!-- Exercise Type -->
+    <div class="fieldWrapper" id="exercise_type" style="display:none">
+        {{ form.exercise_type.errors }}
+        <b>What type of exercise did you do?</b>
+        {{ form.exercise_type }}
+    </div>
+    <!-- Exercise Description -->
+    <div class="fieldWrapper" id="exercise_description" style="display:none">
+        {{ form.exercise_description.errors }}
+        Briefly describe your exercise today.
+        {{ form.exercise_description }}
+    </div>
+    <!-- Exercise Miles -->
+    <div class="fieldWrapper" id="exercise_miles" style="display:none">
+        {{ form.miles.errors }}
+        <b>If you ran, for how many miles?</b>
+        {{ form.miles }}
+    </div>
+    <!-- Sleep -->
+    <div class="fieldWrapper" id="sleep">
+        {{ form.sleep.errors }}
+        <b>How many hours of sleep did you get last night?</b>
+        {{ form.sleep }}
+    </div>
+    <h3> <b>Mental</b> <h3>
+    <!-- Meditation -->
+    {{  form.non_field_errors }}
+    <div class="fieldWrapper">
+        {{ form.meditation.errors }}
+        <b>Did you meditate, or practice mindfulness today?</b>
+        {{ form.meditation }}
+    </div>
+    <!-- Meditation Time -->
+    <div class="fieldWrapper" id="med_time" style="display:none">
+        {{ form.meditation_time.errors }}
+        <b>For how long?</b>
+        {{ form.meditation_time }}
+    </div>
+    <!-- Mood Number -->
+    <div class="fieldWrapper" id="mood_number">
+        {{ form.mood_number.errors }}
+        <b>On a scale of 1 to 5, 3 being average, how was your mood today?</b>
+        {{ form.mood_number }}
+    </div>
+    <!-- Mood -->
+    <div class="fieldWrapper" id="mood">
+        {{ form.mood.errors }}
+        <b>Describe your mood today.</b>
+        {{ form.mood }}
+    </div>
+    <h3> <b>Spiritual</b> </h3>
+    <!-- Art -->
+    <div class="fieldWrapper" id="art">
+        {{ form.art.errors }}
+        <b>On a scale of 1 to 5, 3 being average, how would you rate your artistic or spiritual development today?</b>
+        {{ form.art }}
+    </div>
+    <input type="submit" value="Submit" />
+    </form>
+    </p>
+    {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ field.label_tag }} : {{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+

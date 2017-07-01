@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="post">
+        {% if post.date %}
+            <div class="date">
+                {{ post.date }}
+            </div>
+        {% endif %}
+        <h1>{{ post.date }}</h1>
+        {% if post.exercise %}
+          <p> {{post.exercise}} </p>
+        {% endif %}
+        <p> {{ post.calories }} calories </p>
+        <p> {{ post.sleep }} hours of sleep</p>
+        <p> {{ post.art }} art</p>
+        {% if post.meditation %}
+          <p> {{post.meditation_time}} minutes of meditation </p>
+        {% endif %}
+        <p>{{ post.mood|linebreaksbr }}</p>
+    </div>
+{% endblock %}
