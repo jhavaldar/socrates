@@ -8,7 +8,7 @@
                     <div class="date">
                         <p>published: {{ post.date }}</p>
                     </div>
-                    <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.date }}</a></h1>
+                    <h1><a href="{% url 'socrates:post_detail' pk=post.pk %}">{{ post.date }}</a></h1>
                     <p>{{ post.mood|linebreaksbr }}</p>
                 </div>
             {% endfor %}

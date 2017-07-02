@@ -17,6 +17,7 @@ class Exercise(models.Model):
       return self.description
 
 class Entry(models.Model):
+  user_name = models.CharField(max_length=2000)
   date = models.DateField()
   exercise = models.ForeignKey(Exercise, blank=True, null=True)
   calories = models.IntegerField()
@@ -28,4 +29,4 @@ class Entry(models.Model):
   mood_number = models.IntegerField()
 
   def __unicode__(self):
-      return self.date
+      return str(self.date)

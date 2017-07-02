@@ -102,8 +102,10 @@ window.onload = function() {
     <!-- Mood -->
     <div class="fieldWrapper" id="mood">
         {{ form.mood.errors }}
-        <b>Describe your mood today.</b>
-        {{ form.mood }}
+        <b>Describe your mood today (for best results, ~ 750 words)</b>
+        <p>
+        <textarea id="id_mood" name="mood" type="text" rows="1" cols="26"></textarea>
+        </p>
     </div>
     <h3> <b>Spiritual</b> </h3>
     <!-- Art -->

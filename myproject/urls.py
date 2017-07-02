@@ -18,5 +18,8 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls, name='admin-site'),
-    url(r'', include('myblog.urls')),
+    url(r'', include('myblog.urls',namespace="socrates")),
+    url(r'^logout/$', include('myblog.urls'), {'next_page': 'admin/'}, name='auth_logout'),
+    url(r'^accounts/', include('registration.backends.simple.urls')),
+    url('^accounts/', include('django.contrib.auth.urls', namespace="auth"))
 ]

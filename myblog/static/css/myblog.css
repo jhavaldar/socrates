@@ -5,6 +5,10 @@
     margin-left: -30px;
 }
 
+#id_mood {
+    width: 80%;
+}
+
 .fieldWrapper, input{
     padding:5px 5px 5px 0px;
     font-size:16px;
