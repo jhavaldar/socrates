@@ -8,6 +8,7 @@ EXERCISE_TYPES = (
   ('O', 'Other'),
 )
 
+# Defines the form for an entry (should have named it EntryForm, lol).
 class PostForm(forms.Form):
     did_exercise = forms.BooleanField(initial=False, required=False)
     exercise_type = forms.ChoiceField(choices=EXERCISE_TYPES, required=False,initial='O')

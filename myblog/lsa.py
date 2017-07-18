@@ -4,8 +4,12 @@ import json
 from collections import defaultdict
 import os
 
+# Class which allows comparisons of documents in a semantic space created by using
+# SVD on a term-document matrix of choice.
 class LSA:
 
+  # Initializes dictionary (map from words to IDs), a set of documents for comparison,
+  # and the number of singular values to keep in the SVD. (300-500 is recommended).
   def __init__(self, relative_root, sentiment_path, num_topics=500):
 
     self.dict_path = relative_root+'corp.dict'
@@ -24,13 +28,16 @@ class LSA:
 
     self.sentiment_tags = [key for key in self.sentiments]
 
+  # Analyzes an array of document texts to create a dictionary (map from words to IDS),
+  # An LSI model (essentially, SVD), and an index (set of document vectors in the space)
+  # To allow fast cached comparisons
   def analyze_corpus(self,comments):
     self.save_dict(comments, dict_path=self.dict_path, corp_path=self.corp_path)  # Saves full corpus & dictionary
     self.save_lsi(dict_path=self.dict_path, corp_path=self.corp_path, num_topics=self.num_topics, model_path=self.model_path) # Saves model
     self.save_index(dict_path=self.dict_path, corp_path=self.corp_path, sentiment_path=self.sentiment_path, model_path=self.model_path, index_path=self.index_path) # Saves index
 
-  @staticmethod
   # Check if a string is ASCII
+  @staticmethod
   def is_ascii(s):
       return all(ord(c) < 128 for c in s)
 
@@ -46,8 +53,7 @@ class LSA:
       for token in text:
         frequency[token] += 1
 
-    # Turn each sentence into a list of present tokens
-
+    # Turn each sentence into a list of tokens
     texts = [[token for token in text if frequency[token] > 1]  for text in texts]
 
     dictionary = corpora.Dictionary(texts)

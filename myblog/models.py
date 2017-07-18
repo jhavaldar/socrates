@@ -1,8 +1,7 @@
 from __future__ import unicode_literals
 from django.db import models
 
-# Create your models here.
-
+# Exercise for the day. One per day.
 class Exercise(models.Model):
   EXERCISE_TYPES = (
     ('C', 'Cardio'),
@@ -15,6 +14,7 @@ class Exercise(models.Model):
   def __unicode__(self):
       return str(self.description)
 
+# Sentiment scores for the day (angry, sad)
 class SScore(models.Model):
   angry = models.FloatField()
   sad = models.FloatField()
@@ -28,6 +28,7 @@ class SScore(models.Model):
         text += tags[i]+": "+str(feelings[i])+"\n"
     return text
 
+# Journal entry for the day
 class Entry(models.Model):
   user_name = models.CharField(max_length=2000)
   date = models.DateField()
@@ -42,6 +43,7 @@ class Entry(models.Model):
   def __unicode__(self):
       return str(self.date)
 
+  # Upon deletion, also delete related exercise and sentiment score entries.
   def delete(self, using=None):
     if self.exercise:
         self.exercise.delete()

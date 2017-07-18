@@ -8,6 +8,8 @@ import os.path
 import sys
 from django.http import JsonResponse
 
+# Creates d3 dashboard which graphs sentiment scores over time, along with streaks of meditation
+# and exercise.
 @login_required
 def graph(request):
     entries = Entry.objects.filter(user_name=request.user).all()
@@ -25,6 +27,7 @@ def graph(request):
             meditation_streak += 1
     return render(request, 'graph.html', {'e_streak': exercise_streak, 'm_streak': meditation_streak})
 
+# Makes call to the API to get recent num_items days of data.
 @login_required
 def get_data(request, num_items=21):
     entries = Entry.objects.filter(user_name=request.user).all()[:num_items]
@@ -40,12 +43,14 @@ def get_data(request, num_items=21):
     i = len(entries)
     return JsonResponse(data, safe=False)
 
+# Renders all the posts of the user.
 @login_required
 def post_list(request):
     user_name = request.user.username
     posts = Entry.objects.filter(date__lte=timezone.now()).filter(user_name=user_name).order_by('date')
     return render(request, 'post_list.html', {'posts': posts})
 
+# Creates a new post for the user.
 @login_required
 def post_new(request):
     if request.method == "POST":
@@ -83,11 +88,13 @@ def post_new(request):
         form = PostForm()
     return render(request, 'post_edit.html', {'form': form})
 
+# Displays the details of the post
 @login_required
 def post_detail(request, pk):
     post = get_object_or_404(Entry, pk=pk)
     return render(request, 'post_detail.html', {'post': post})
 
+# Deletes the post as well as its related DB objects and returns to the post list.
 @login_required
 def post_delete(request, pk):
     post = get_object_or_404(Entry, pk=pk)
@@ -97,6 +104,7 @@ def post_delete(request, pk):
     posts = Entry.objects.filter(date__lte=timezone.now()).filter(user_name=user_name).order_by('date')
     return render(request, 'post_list.html', {'posts': posts})
 
+# Edits a post.
 @login_required
 def post_edit(request, pk):
     post = get_object_or_404(Entry, pk=pk)
