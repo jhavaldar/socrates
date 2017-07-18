@@ -14,6 +14,7 @@ h2  {
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
 <script type='text/javascript'>
   function medTimeHide() {
+      console.log("test");
       if(document.getElementById('id_meditation').checked) {
         document.getElementById('med_time').style.display = '';
       }
@@ -35,7 +36,6 @@ h2  {
 
 window.onload = function() {
     document.getElementById('id_did_exercise').onchange = exerciseTypeHide;
-    document.getElementById('id_exercise_type').onchange = exerciseMilesHide;
     document.getElementById('id_meditation').onclick = medTimeHide;
 };
 </script>

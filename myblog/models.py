@@ -13,7 +13,7 @@ class Exercise(models.Model):
   exercise_type = models.CharField(max_length=1, choices=EXERCISE_TYPES, blank=True, null=True)
 
   def __unicode__(self):
-      return self.description
+      return str(self.description)
 
 class SScore(models.Model):
   angry = models.FloatField()
@@ -41,3 +41,10 @@ class Entry(models.Model):
 
   def __unicode__(self):
       return str(self.date)
+
+  def delete(self, using=None):
+    if self.exercise:
+        self.exercise.delete()
+    if self.score:
+        self.score.delete()
+    super(Profile, self).delete(using)

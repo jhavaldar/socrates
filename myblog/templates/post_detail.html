@@ -32,7 +32,7 @@ h3  {
         {% endif %}
         <p>On a scale of 1 to 5, you rated your mood at a <b>{{ post.mood_number|linebreaksbr }}</b>.</p>
         {% if post.exercise %}
-          <p> You did some exercise: "{{post.exercise}}" </p>
+          <p> You did some exercise: "{{post.exercise.description}}" </p>
         {% endif %}
 
         <h3>Journal Entry</h3>
