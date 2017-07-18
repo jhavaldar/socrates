@@ -105,7 +105,6 @@ def post_edit(request, pk):
         form = PostForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            print cd['exercise_description']
             user_name = request.user.username
 
             exercise = post.exercise
