@@ -7,6 +7,28 @@
 {% endblock %}
 
 {% block content %}
+<style>
+p  {
+  font-size: 18px;
+  font-family: "Century Gothic";
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+</style>
+<h2> What is Socrates? </h2>
+<p>
+Socrates is a journaling web-app built upon the belief that the unexamined life is not worth living.
+<br>
+<br>
+The app uses natural language processing techniques to assess negative emotions such as anger and sadness in your journal entries. Socrates also allows you to track your exercise and mindfulness habits along with your mood over a period of time. By consistently tracking your mood and habits, you can better understand your own unique circumstances and improve your quality of life.
+</p>
+
+<h2> Can a computer really read my mood? </h2>
+<p>
+Well, no, not exactly. The app uses an approach called latent semantic analysis which treats your journal entry as a "bag of words" (without regard for order) and compares it to other documents that use similar words about as often as you do. This approach has been shown to work with surprising accuracy on documents such as song lyrics, movie and television scripts, and even tweets. The approach has many shortcomings, but the longer your entries are, and the more entries you make, the better you'll be able to estimate your own mood in your journal entries. In addition, the app allows you to self-report a mood score. Try it out and see for yourself!
+</p>
+
+<h2> Register </h2>
 <form method="post" class="form">
     {% csrf_token %}
     {% bootstrap_form form layout='inline' %}

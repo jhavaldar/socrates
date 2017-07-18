@@ -9,24 +9,35 @@ class Exercise(models.Model):
     ('S', 'Strength'),
     ('O', 'Other'),
   )
-  miles = models.FloatField(blank=True, null=True)
   description = models.CharField(max_length=1000)
   exercise_type = models.CharField(max_length=1, choices=EXERCISE_TYPES, blank=True, null=True)
 
   def __unicode__(self):
       return self.description
 
+class SScore(models.Model):
+  angry = models.FloatField()
+  sad = models.FloatField()
+
+  def __unicode__(self):
+    feelings = [self.angry, self.sad]
+    tags = ['angry', 'sad']
+    text = ""
+    for i in range(0, len(tags)):
+      if feelings[i] >= 0.000:
+        text += tags[i]+": "+str(feelings[i])+"\n"
+    return text
+
 class Entry(models.Model):
   user_name = models.CharField(max_length=2000)
   date = models.DateField()
   exercise = models.ForeignKey(Exercise, blank=True, null=True)
-  calories = models.IntegerField()
   sleep = models.FloatField()
-  art = models.IntegerField()
   meditation = models.BooleanField()
   meditation_time = models.FloatField(blank=True, null=True)
   mood = models.TextField()
   mood_number = models.IntegerField()
+  score = models.ForeignKey(SScore)
 
   def __unicode__(self):
       return str(self.date)

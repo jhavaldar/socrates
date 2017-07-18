@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+p  {
+  font-size: 18px;
+  font-family: "Century Gothic";
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+#chart{
+  font-size: 12px;
+  font-family: "Century Gothic"
+}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+.x.axis path {
+  display: none;
+}
+#blue {
+  color: #4169E1;
+}
+#red {
+  color: #990000;
+}
+#option{
+  margin-left: 175px;
+  margin-bottom: 50px;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 3.0px;
+}
+</style>
+{% extends 'base.html' %}
+{% block content %}
+<body>
+<h1> Mood Scores </h1>
+
+<div id="chart">
+</div>
+
+<div id="option"class="btn-group">
+  <button type="button" class="btn" onclick="updateData(7)">Week</button>
+  <button type="button" class="btn" onclick="updateData(30)">Month</button>
+  <button type="button" class="btn" onclick="updateData(180)">Six Months</button>
+  <button type="button" class="btn" id="angerbutton">Anger</button>
+  <button type="button" class="btn" id="sadnessbutton">Sadness</button>
+</div>
+
+
+<p>
+The graph above tracks negative emotions such as sadness (<span id="blue">blue</span>) and anger (<span id="red">red</span>) in your journal posts over the past week, month, or half year.
+</p>
+
+<br>
+<br>
+<p>
+To see a list of all of your journal entries, <a href="{% url 'socrates:post_list' %}">click here.</a>
+</p>
+<br>
+<br>
+<p>
+{% if e_streak > 0 %}
+<b>Keep up the good work!</b> You've been exercising for the past {{e_streak}} days.
+{% endif %}
+</p>
+<p>
+{% if m_streak > -1 %}
+<b>Keep up the good work!</b> You've been practicing mindfulness for the past {{m_streak}} days.
+{% endif %}
+</p>
+
+<br>
+<br>
+<br>
+<script src="http://d3js.org/d3.v3.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script>
+function sortByDateAscending(a, b) {
+  return a.date - b.date;
+}
+var margin = {top: 20, right: 300, bottom: 30, left: 10},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+var parseDate = d3.time.format("%Y-%m-%d").parse; // for dates like "2014-01-01"
+var x = d3.time.scale()
+    .range([0, width]);
+var y = d3.scale.linear()
+    .range([height, 0]);
+var z = d3.scale.ordinal();
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left");
+var line = d3.svg.line()
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d.angry); })
+    .interpolate('basis');
+var line2 = d3.svg.line()
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d.sad); })
+    .interpolate('basis');
+var svg = d3.select("#chart").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+d3.json("{% url 'socrates:get_data' %}", function(error, data) {
+  data.forEach(function(d) {
+    d.date = parseDate(d.date);
+    d.angry = +d.angry;
+    d.sad = +d.sad;
+  });
+  // Sort the data
+  data = data.sort(sortByDateAscending);
+
+  x.domain(d3.extent(data, function(d) { return d.date; }));
+  y.domain([0, d3.max(data, function(d) {
+    return Math.max(d.angry, d.sad); })]);
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Intensity");
+
+  svg.append("path")
+      .datum(data)
+      .attr("class", "line")
+      .style("stroke", "#990000")
+      .style("attr", "none")
+      .attr("id", "angry")
+      .attr("d", line);
+  svg.append("path")
+      .data([data])
+      .attr("class", "line")
+      .attr("id", "sad")
+      .style("stroke", "#4169E1")
+      .attr("fill", "none")
+      .attr("d", line2);
+});
+
+// ** Update data section (Called from the onclick)
+var updateData = function(items) {
+  var url_mask = "{% url 'socrates:get_data' num_items=12345 %}".replace(/12345/, items.toString());
+  // Get the data again
+  d3.json(url_mask, function(error, data) {
+    data.forEach(function(d) {
+      d.date = parseDate(d.date);
+      d.angry = +d.angry;
+      d.sad = +d.sad;
+    });
+
+    // Sort the data
+    data = data.sort(sortByDateAscending);
+
+    // Scale the range of the data again 
+    x.domain(d3.extent(data, function(d) { return d.date; }));
+    y.domain([0, d3.max(data, function(d) {
+    return Math.max(d.angry, d.sad); })]);
+
+    console.log(data);
+  // Select the section we want to apply our changes to
+  var svg = d3.select("#chart").transition();
+  // Make the changes
+      svg.select("#angry")   // change the line
+          .duration(750)
+          .attr("d", line(data));
+      svg.select("#sad")   // change the line
+          .duration(750)
+          .attr("d", line2(data));
+      svg.select(".x.axis") // change the x axis
+          .duration(750)
+          .call(xAxis);
+      svg.select(".y.axis") // change the y axis
+          .duration(750)
+          .call(yAxis);
+  });
+}
+</script>
+<script>
+$("#angerbutton").click(function() { 
+    // assumes element with id='button'
+    $("#angry").toggle();
+});
+$("#sadnessbutton").click(function() { 
+    // assumes element with id='button'
+    $("#sad").toggle();
+});
+</script>
+</body>
+</html>
+{% endblock %}

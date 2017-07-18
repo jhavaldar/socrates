@@ -1,21 +1,93 @@
 {% extends 'base.html' %}
 {% block content %}
+<style>
+svg {
+  font-size: 14px;
+  font-family: "Century Gothic";
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+p,body  {
+  font-size: 14px;
+  font-family: "Century Gothic";
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+h3  {
+  font-weight: bold;
+  font-size: 24px;
+  font-family: "Century Gothic";
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+</style>
     <div class="post">
-        {% if post.date %}
-            <div class="date">
-                {{ post.date }}
-            </div>
-        {% endif %}
-        <h1>{{ post.date }}</h1>
-        {% if post.exercise %}
-          <p> {{post.exercise}} </p>
-        {% endif %}
-        <p> {{ post.calories }} calories </p>
-        <p> {{ post.sleep }} hours of sleep</p>
-        <p> {{ post.art }} art</p>
+        <h1>{{ post.date }}   <a class="btn btn-default" href="{% url 'socrates:post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a><a class="btn btn-default" href="{% url 'socrates:post_delete' pk=post.pk %}"><span class="glyphicon glyphicon-trash"></span></a></h1>
+
+
+        <h3> Summary </h3>
+        <p> You got <b>{{ post.sleep }}</b> hours of sleep.</p>
         {% if post.meditation %}
-          <p> {{post.meditation_time}} minutes of meditation </p>
+          <p> You did <b>{{post.meditation_time}}</b> minutes of mindfulness practice. </p>
         {% endif %}
-        <p>{{ post.mood|linebreaksbr }}</p>
+        <p>On a scale of 1 to 5, you rated your mood at a <b>{{ post.mood_number|linebreaksbr }}</b>.</p>
+        {% if post.exercise %}
+          <p> You did some exercise: "{{post.exercise}}" </p>
+        {% endif %}
+
+        <h3>Journal Entry</h3>
+        <p>{{ post.mood |linebreaksbr }}</p>
+
+    <svg width="600" height="400"></svg>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script>
+
+    var svg = d3.select("svg"),
+        margin = {top: 20, right: 20, bottom: 30, left: 40},
+        width = +svg.attr("width") - margin.left - margin.right,
+        height = +svg.attr("height") - margin.top - margin.bottom;
+
+    var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+        y = d3.scaleLinear().rangeRound([height, 0]);
+
+    var g = svg.append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var data = [{feeling: "Anger", score: "{{post.score.angry}}"},
+    {feeling: "Sadness", score: "{{post.score.sad}}"}
+    ];
+
+        // The following code was contained in the callback function.
+    x.domain(data.map(function(d) { return d.feeling; }));
+    y.domain([0, 0.03]);
+    var colors = {"Anger":"#990000", "Sadness":"#4169E1"};
+
+    g.append("g")
+      .attr("class", "axis axis--x")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+
+    g.append("g")
+      .attr("class", "axis axis--y")
+      .call(d3.axisLeft(y).ticks(10))
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", "0.71em")
+      .attr("text-anchor", "end")
+      .text("Score");
+
+    g.selectAll(".bar")
+    .data(data)
+    .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d.feeling); })
+      .attr("y", function(d) { return y(+d.score); })
+      .attr("width", x.bandwidth())
+      .attr("height", function(d) { return height - y(+d.score); })
+      .attr("fill", function (d){ return colors[d.feeling]; });
+
+    </script>
+        <p>{{ post.score|linebreaksbr }}</p>
     </div>
 {% endblock %}

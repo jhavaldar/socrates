@@ -5,6 +5,13 @@
     margin-left: -30px;
 }
 
+p,body  {
+  font-size: 18px;
+  font-family: "Century Gothic";
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
 #id_mood {
     width: 80%;
 }

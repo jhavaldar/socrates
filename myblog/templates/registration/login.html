@@ -5,7 +5,9 @@
 <h2>Login</h2>
 {% endblock %}
 
+
 {% block content %}
+<p>
 <form action="{% url 'auth:login' %}" method="post" class="form">
     {% csrf_token %}
     {% bootstrap_form form layout='inline' %}
@@ -15,4 +17,5 @@
     </button>
     {% endbuttons %}
 </form>
+</p>
 {% endblock %}
