@@ -47,4 +47,4 @@ class Entry(models.Model):
         self.exercise.delete()
     if self.score:
         self.score.delete()
-    super(Profile, self).delete(using)
+    super(Entry, self).delete(using)
