@@ -6,9 +6,8 @@
 }
 
 p  {
-  font-size: 18px;
+  font-size: 15px;
   font-family: "Century Gothic";
-  margin-bottom: 50px;
 }
 
 #id_mood {
@@ -17,12 +16,12 @@ p  {
 
 .fieldWrapper, input{
     padding:5px 5px 5px 0px;
-    font-size:16px;
-    font-family:'Simplifica', sans serif;
+    font-size:15px;
+    font-family:'Century Gothic', sans serif;
 }
 
 form {
-    font-family: 'Simplifica', sans serif;
+    font-family: 'Century Gothic', sans serif;
 }
 
 .page-header h1, .page-header h1 a, .page-header h1 a:visited, .page-header h1 a:active {

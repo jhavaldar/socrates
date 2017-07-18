@@ -22,7 +22,7 @@ h3  {
 }
 </style>
     <div class="post">
-        <h1>{{ post.date }}   <a class="btn btn-default" href="{% url 'socrates:post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a><a class="btn btn-default" href="{% url 'socrates:post_delete' pk=post.pk %}"><span class="glyphicon glyphicon-trash"></span></a></h1>
+        <h1>{{ post.date }} <a class="btn btn-default" href="{% url 'socrates:post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a><a class="btn btn-default" href="{% url 'socrates:post_delete' pk=post.pk %}"><span class="glyphicon glyphicon-trash"></span></a></h1>
 
 
         <h3> Summary </h3>
@@ -38,6 +38,7 @@ h3  {
         <h3>Journal Entry</h3>
         <p>{{ post.mood |linebreaksbr }}</p>
 
+    <h3> Analysis </h3>
     <svg width="600" height="400"></svg>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script>
@@ -88,6 +89,5 @@ h3  {
       .attr("fill", function (d){ return colors[d.feeling]; });
 
     </script>
-        <p>{{ post.score|linebreaksbr }}</p>
     </div>
 {% endblock %}
