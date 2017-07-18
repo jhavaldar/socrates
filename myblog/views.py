@@ -15,13 +15,14 @@ def graph(request):
     meditation_streak = 0
     # Calculate longest exercise streak!
     i = len(entries) - 1
-    while (entries[i].exercise is not None):
-        i -=1
-        exercise_streak += 1
-    j = len(entries) - 1
-    while (entries[i].meditation):
-        j -=1
-        meditation_streak += 1
+    if i > 0:
+        while (entries[i].exercise is not None):
+            i -=1
+            exercise_streak += 1
+        j = len(entries) - 1
+        while (entries[i].meditation):
+            j -=1
+            meditation_streak += 1
     return render(request, 'graph.html', {'e_streak': exercise_streak, 'm_streak': meditation_streak})
 
 @login_required
