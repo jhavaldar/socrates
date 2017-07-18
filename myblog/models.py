@@ -31,13 +31,13 @@ class SScore(models.Model):
 class Entry(models.Model):
   user_name = models.CharField(max_length=2000)
   date = models.DateField()
-  exercise = models.ForeignKey(Exercise, blank=True, null=True)
+  exercise = models.ForeignKey(Exercise, blank=True, null=True, on_delete=models.CASCADE)
   sleep = models.FloatField()
   meditation = models.BooleanField()
   meditation_time = models.FloatField(blank=True, null=True)
   mood = models.TextField()
   mood_number = models.IntegerField()
-  score = models.ForeignKey(SScore)
+  score = models.ForeignKey(SScore, on_delete=models.CASCADE)
 
   def __unicode__(self):
       return str(self.date)
