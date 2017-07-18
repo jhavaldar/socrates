@@ -1,14 +1,12 @@
 .page-header {
     background-color: #4169E1;
-    margin-top: 0;
     padding: 20px 20px 20px 40px;
     margin-left: -30px;
 }
 
-p,body  {
+p  {
   font-size: 18px;
   font-family: "Century Gothic";
-  margin-top: 50px;
   margin-bottom: 50px;
 }
 
@@ -35,7 +33,6 @@ form {
 }
 
 .content, {
-    margin-left: 10px;
     margin-bottom: 200px;
 }
 

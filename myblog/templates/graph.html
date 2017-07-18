@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<meta charset="utf-8">
-<style>
+{% extends 'base.html' %}
+{% block content %}
+<body>
+  <style>
 p  {
   font-size: 18px;
   font-family: "Century Gothic";
-  margin-top: 50px;
   margin-bottom: 50px;
 }
 #chart{
@@ -35,11 +35,7 @@ p  {
   fill: none;
   stroke: steelblue;
   stroke-width: 3.0px;
-}
-</style>
-{% extends 'base.html' %}
-{% block content %}
-<body>
+}</style>
 <h1> Mood Scores </h1>
 
 <div id="chart">
@@ -57,14 +53,9 @@ p  {
 <p>
 The graph above tracks negative emotions such as sadness (<span id="blue">blue</span>) and anger (<span id="red">red</span>) in your journal posts over the past week, month, or half year.
 </p>
-
-<br>
-<br>
 <p>
 To see a list of all of your journal entries, <a href="{% url 'socrates:post_list' %}">click here.</a>
 </p>
-<br>
-<br>
 <p>
 {% if e_streak > 0 %}
 <b>Keep up the good work!</b> You've been exercising for the past {{e_streak}} days.
