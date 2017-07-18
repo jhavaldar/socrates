@@ -22,8 +22,6 @@ def graph(request):
     while (entries[i].meditation):
         j -=1
         meditation_streak += 1
-    print >> sys.stderr, exercise_streak
-    print >> sys.stderr, meditation_streak
     return render(request, 'graph.html', {'e_streak': exercise_streak, 'm_streak': meditation_streak})
 
 @login_required
@@ -146,7 +144,6 @@ def post_edit(request, pk):
             return redirect('socrates:post_detail', pk=post.pk)
     else:
         post = get_object_or_404(Entry, pk=pk)
-        print >> sys.stderr, post.mood
         data = {}
 
         data['did_exercise'] = post.exercise
