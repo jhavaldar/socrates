@@ -2,8 +2,10 @@
 {% block title %}Dashboard{% endblock %}
 {% block content %}
 <div class="content container">
-    {% if posts %}
+    {% if not posts %}
+    <p>
     Looks like you don't have any posts yet! To create an entry for today, click the plus icon on the upper right.
+    </p>
     {% endif %}
     <div class="row">
         <div class="col-md-8">
